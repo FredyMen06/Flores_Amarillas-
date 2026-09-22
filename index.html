@@ -2,341 +2,433 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0">
 <title>Para ti 🌻</title>
 <style>
-* {
-    box-sizing: border-box;
+/* =====================================================
+   CONFIGURACIÓN GENERAL
+   ===================================================== */
+*{
+    box-sizing:border-box;
 }
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    font-family: Georgia, "Times New Roman", serif;
-    background: #070b1b;
-    color: white;
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    background:#050817;
+    color:white;
 }
-/* =========================================================
-   FONDO
-   ========================================================= */
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* =====================================================
+   CANVAS
+   ===================================================== */
+#jardin{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:0;
 }
-canvas {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+/* =====================================================
+   CAPA OSCURA SUAVE
+   ===================================================== */
+.vigneta{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 25%,
+            rgba(0,0,0,.35) 100%
+        );
 }
-/* =========================================================
+/* =====================================================
    CONTENEDOR
-   ========================================================= */
-.contenedor {
-    position: relative;
-    z-index: 5;
-    width: 92%;
-    max-width: 600px;
-    text-align: center;
+   ===================================================== */
+.contenedor{
+    position:relative;
+    z-index:5;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    text-align:center;
 }
-/* =========================================================
+/* =====================================================
    ESCENAS
-   ========================================================= */
-.escena {
-    display: none;
-    opacity: 0;
-    transform: translateY(20px);
+   ===================================================== */
+.escena{
+    position:absolute;
+    width:min(92%,620px);
+    opacity:0;
+    transform:
+        translateY(20px)
+        scale(.98);
+    pointer-events:none;
     transition:
-        opacity 0.8s ease,
-        transform 0.8s ease;
+        opacity 1.2s ease,
+        transform 1.2s ease;
 }
-.escena.activa {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
+.escena.activa{
+    opacity:1;
+    transform:
+        translateY(0)
+        scale(1);
+    pointer-events:auto;
 }
-/* =========================================================
+/* =====================================================
    TARJETA
-   ========================================================= */
-.tarjeta {
-    padding: 30px 22px;
-    border-radius: 30px;
-    background: rgba(5, 10, 30, 0.55);
-    border: 1px solid rgba(255, 220, 80, 0.20);
-    backdrop-filter: blur(8px);
+   ===================================================== */
+.tarjeta{
+    padding:
+        32px
+        24px;
+    border-radius:30px;
+    background:
+        rgba(
+            5,
+            10,
+            30,
+            .62
+        );
+    border:
+        1px solid
+        rgba(
+            255,
+            220,
+            80,
+            .20
+        );
+    backdrop-filter:
+        blur(10px);
     box-shadow:
-        0 20px 60px rgba(0,0,0,0.35);
+        0 20px 70px
+        rgba(0,0,0,.4);
 }
-/* =========================================================
-   TEXTOS
-   ========================================================= */
-h1 {
-    font-size: clamp(
-        2.4rem,
-        10vw,
-        5rem
-    );
-    line-height: 0.95;
-    margin: 15px 0;
-    color: #ffe15c;
+/* =====================================================
+   TEXTO
+   ===================================================== */
+h1{
+    font-size:
+        clamp(
+            2.3rem,
+            10vw,
+            5rem
+        );
+    line-height:.98;
+    margin:
+        15px 0;
+    color:#ffe15c;
     text-shadow:
-        0 0 20px rgba(255,210,50,0.25);
+        0 0 25px
+        rgba(
+            255,
+            215,
+            60,
+            .30
+        );
 }
-h2 {
-    font-size: clamp(
-        1.7rem,
-        7vw,
-        3rem
-    );
-    color: #fff0a0;
-    line-height: 1.15;
+h2{
+    font-size:
+        clamp(
+            1.7rem,
+            7vw,
+            3rem
+        );
+    line-height:1.15;
+    margin:15px 0;
+    color:#fff0a0;
 }
-p {
-    font-size: clamp(
-        1.05rem,
-        4.5vw,
-        1.4rem
-    );
-    line-height: 1.5;
-    color: #f2f3ff;
+p{
+    font-size:
+        clamp(
+            1.05rem,
+            4.5vw,
+            1.4rem
+        );
+    line-height:1.6;
+    margin:
+        15px auto;
+    color:#f4f5ff;
 }
-/* =========================================================
-   BOTONES
-   ========================================================= */
-button {
-    border: none;
-    border-radius: 50px;
-    padding: 16px 28px;
-    margin-top: 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    font-family: Georgia, serif;
-    color: #2b2100;
+/* =====================================================
+   BOTÓN
+   ===================================================== */
+button{
+    border:none;
+    border-radius:50px;
+    padding:
+        16px
+        30px;
+    margin-top:20px;
+    font-size:1rem;
+    font-weight:bold;
+    font-family:
+        Georgia,
+        serif;
+    color:#291e00;
     background:
         linear-gradient(
             135deg,
             #ffe45a,
-            #f4ad20
+            #f2ad1d
         );
-    cursor: pointer;
+    cursor:pointer;
     box-shadow:
-        0 10px 35px
-        rgba(255,190,30,0.25);
+        0 10px 40px
+        rgba(
+            255,
+            195,
+            35,
+            .25
+        );
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform .2s ease;
 }
-button:active {
-    transform: scale(0.95);
+button:active{
+    transform:
+        scale(.95);
 }
-/* =========================================================
+/* =====================================================
    CORAZÓN FINAL
-   ========================================================= */
-.corazon-grande {
-    font-size: clamp(
-        7rem,
-        30vw,
-        12rem
-    );
-    color: #ff416c;
-    line-height: 0.8;
+   ===================================================== */
+.corazon{
+    font-size:
+        clamp(
+            7rem,
+            30vw,
+            12rem
+        );
+    line-height:.8;
+    color:#ff416c;
     filter:
         drop-shadow(
-            0 0 25px
-            rgba(255,50,100,0.55)
+            0 0 30px
+            rgba(
+                255,
+                50,
+                100,
+                .55
+            )
         );
     animation:
-        latido 1.2s infinite;
+        latido 1.3s
+        infinite;
 }
-@keyframes latido {
-    0%,100% {
-        transform: scale(1);
+@keyframes latido{
+    0%,100%{
+        transform:
+            scale(1);
     }
-    15% {
-        transform: scale(1.12);
+    15%{
+        transform:
+            scale(1.13);
     }
-    30% {
-        transform: scale(1);
+    30%{
+        transform:
+            scale(1);
     }
-    45% {
-        transform: scale(1.07);
+    45%{
+        transform:
+            scale(1.08);
     }
 }
-/* =========================================================
-   TEXTO PEQUEÑO
-   ========================================================= */
-.detalle {
-    font-size: 0.8rem;
-    color: #aeb5d4;
-    margin-top: 20px;
+/* =====================================================
+   DETALLE
+   ===================================================== */
+.detalle{
+    margin-top:22px;
+    font-size:.8rem;
+    color:#aeb5d4;
+}
+/* =====================================================
+   MOVIMIENTO REDUCIDO
+   ===================================================== */
+@media(
+    prefers-reduced-motion:reduce
+){
+    .corazon{
+        animation:none;
+    }
 }
 </style>
 </head>
 <body>
-<!-- =======================================================
-     CANVAS PARA LAS FLORES
-     ======================================================= -->
-<canvas id="flores"></canvas>
+<!-- =====================================================
+     JARDÍN
+     ===================================================== -->
+<canvas id="jardin"></canvas>
+<div class="vigneta"></div>
 <div class="contenedor">
-<!-- =======================================================
+<!-- =====================================================
      ESCENA 0
-     ======================================================= -->
+     ===================================================== -->
 <section
     id="escena0"
-    class="escena activa"
->
-<div class="tarjeta">
-    <p>
-        HECHO ESPECIALMENTE PARA TI
-    </p>
-    <h1>
-        Tengo algo<br>
-        para ti
-    </h1>
-    <p>
-        Hay detalles que no caben
-        en una caja...
-        así que tuve que hacerte uno.
-    </p>
-    <button onclick="comenzar()">
-        Presiona aquí ❤️
-    </button>
-    <div class="detalle">
-        Quédate hasta el final...
+    class="escena activa">
+    <div class="tarjeta">
+        <p>
+            HECHO ESPECIALMENTE PARA TI
+        </p>
+        <h1>
+            Tengo algo<br>
+            para ti
+        </h1>
+        <p>
+            Hay detalles que no puedo darte personalmente 
+            pero siempre buscare la forma de dartelos 
+            }
+        </p>
+        <button
+            onclick="comenzar()">
+            Presiona aquí FEFY ❤️
+        </button>
+        <div class="detalle">
+            Quédate hasta el final...
+        </div>
     </div>
-</div>
 </section>
-<!-- =======================================================
+<!-- =====================================================
      ESCENA 1
-     ======================================================= -->
+     ===================================================== -->
 <section
     id="escena1"
-    class="escena"
->
-<h2>
-    Hoy es
-</h2>
-<h1>
-    21 de<br>
-    septiembre
-</h1>
+    class="escena">
+    <h2>
+        Hoy es
+    </h2>
+    <h1>
+        21 de<br>
+        septiembre
+    </h1>
 </section>
-<!-- =======================================================
+<!-- =====================================================
      ESCENA 2
-     ======================================================= -->
+     ===================================================== -->
 <section
     id="escena2"
-    class="escena"
->
-<div class="tarjeta">
-<h2>
-    Podré estar lejos...
-</h2>
-<p>
-    pero eso nunca va a impedir
-    que busque la forma
-    de hacerte sonreír.
-</p>
-</div>
+    class="escena">
+    <div class="tarjeta">
+        <h2>
+            Podremos estar lejos...
+        </h2>
+        <p>
+            pero eso nunca va a impedir
+            que busque la forma
+            de hacerte feliz.
+        </p>
+    </div>
 </section>
-<!-- =======================================================
+<!-- =====================================================
      ESCENA 3
-     ======================================================= -->
+     ===================================================== -->
 <section
     id="escena3"
-    class="escena"
->
-<div class="tarjeta">
-<h2>
-    Porque siempre...
-</h2>
-<p>
-    trataré de encontrar
-    la forma de sorprenderte,
-    aunque haya kilómetros
-    entre nosotros.
-</p>
-</div>
+    class="escena">
+    <div class="tarjeta">
+        <h2>
+            Porque siempre...
+        </h2>
+        <p>
+            trataré de encontrar
+            la forma de sorprenderte,
+            aunque haya kilómetros
+            entre nosotros.
+        </p>
+    </div>
 </section>
-<!-- =======================================================
+<!-- =====================================================
      ESCENA 4
-     ======================================================= -->
+     ===================================================== -->
 <section
     id="escena4"
-    class="escena"
->
-<p>
-    Y esta vez...
-</p>
-<h2>
-    Aquí tienes
-</h2>
-<h1>
-    tus flores<br>
-    amarillas
-</h1>
+    class="escena">
+    <p>
+      Asi que Esta vez..
+    </p>
+    <h2>
+        Aquí tienes
+    </h2>
+    <h1>
+        tus flores<br>
+        amarillas cora 
+    </h1>
 </section>
-<!-- =======================================================
+<!-- =====================================================
      ESCENA 5
-     ======================================================= -->
+     ===================================================== -->
 <section
     id="escena5"
-    class="escena"
->
-<div class="tarjeta">
-<h2>
-    Para ti 🌻
-</h2>
-<p>
-    Un pequeño jardín
-    hecho especialmente
-    para ti.
-</p>
-</div>
+    class="escena">
+    <div class="tarjeta">
+        <h2>
+            Para ti mi hermosa odontologa 🌻
+        </h2>
+        <p>
+            Un pequeño jardín
+            hecho especialmente
+            para ti con mucho amor.
+        </p>
+    </div>
 </section>
-<!-- =======================================================
+<!-- =====================================================
      ESCENA 6
-     ======================================================= -->
+     ===================================================== -->
 <section
     id="escena6"
-    class="escena"
->
-<div class="corazon-grande">
-    ♥️
-</div>
-<h1>
-    TE AMO MUCHO
-</h1>
-<p>
-    Aunque estemos lejos,<br>
-    siempre pienso en ti.
-</p>
-<button onclick="reiniciar()">
-    Volver a verlo ❤️
-</button>
+    class="escena">
+    <div class="corazon">
+        ♥
+    </div>
+    <h1>
+        TE AMO MUCHOOTE 
+    </h1>
+    <p>
+        Aunque estemos lejos,<br>
+        siempre pienso en ti.
+    </p>
+    <button
+        onclick="reiniciar()">
+        Volver a verlo ❤️
+    </button>
 </section>
 </div>
 <script>
-/* =========================================================
-   VARIABLES
-   ========================================================= */
+/* =====================================================
+   CANVAS
+   ===================================================== */
 const canvas =
-    document.getElementById("flores");
+    document.getElementById(
+        "jardin"
+    );
 const ctx =
-    canvas.getContext("2d");
+    canvas.getContext(
+        "2d"
+    );
 let ancho;
 let alto;
 let flores = [];
 let petalos = [];
-let corazones = [];
-let animando = false;
-/* =========================================================
-   AJUSTAR PANTALLA
-   ========================================================= */
-function ajustarPantalla() {
+let particulas = [];
+let animacionActiva =
+    false;
+/* =====================================================
+   TAMAÑO
+   ===================================================== */
+function ajustarPantalla(){
     ancho =
         window.innerWidth;
     alto =
@@ -345,104 +437,104 @@ function ajustarPantalla() {
         ancho;
     canvas.height =
         alto;
-    crearFlores();
+    crearJardin();
 }
 window.addEventListener(
     "resize",
     ajustarPantalla
 );
-/* =========================================================
-   CREAR FLORES
-   ========================================================= */
-function crearFlores() {
-    flores = [
-        {
-            x: 0.14,
-            y: 0.30,
-            tam: 42,
-            fase: 0
-        },
-        {
-            x: 0.86,
-            y: 0.30,
-            tam: 45,
-            fase: 1
-        },
-        {
-            x: 0.16,
-            y: 0.55,
-            tam: 40,
-            fase: 2
-        },
-        {
-            x: 0.84,
-            y: 0.55,
-            tam: 42,
-            fase: 3
-        },
-        {
-            x: 0.32,
-            y: 0.72,
-            tam: 35,
-            fase: 4
-        },
-        {
-            x: 0.68,
-            y: 0.72,
-            tam: 36,
-            fase: 5
-        },
-        {
-            x: 0.50,
-            y: 0.56,
-            tam: 43,
-            fase: 6
-        }
-    ];
-}
-/* =========================================================
-   PÉTALOS
-   ========================================================= */
-function crearPetalos() {
-    petalos = [];
-    for (
-        let i = 0;
-        i < 35;
+/* =====================================================
+   CREAR JARDÍN
+   ===================================================== */
+function crearJardin(){
+    flores=[];
+    /*
+       MUCHAS FLORES
+       Cada una tiene:
+       x
+       y
+       tamaño
+       profundidad
+       fase
+       velocidad
+    */
+    const cantidad =
+        ancho < 500
+        ? 22
+        : 34;
+    for(
+        let i=0;
+        i<cantidad;
         i++
-    ) {
-        petalos.push({
+    ){
+        flores.push({
             x:
                 Math.random()
                 * ancho,
             y:
                 alto *
-                (0.15 +
-                Math.random() *
-                0.70),
+                (
+                    .28 +
+                    Math.random()*.63
+                ),
             tam:
-                3 +
-                Math.random() * 5,
+                16 +
+                Math.random()*35,
+            fase:
+                Math.random()
+                *Math.PI*2,
             velocidad:
-                0.2 +
-                Math.random() * 0.5,
-            movimiento:
+                .0003 +
+                Math.random()*.0006,
+            profundidad:
                 Math.random()
-                * Math.PI * 2,
-            giro:
-                Math.random()
-                * Math.PI * 2
         });
     }
 }
-/* =========================================================
+/* =====================================================
+   CREAR PÉTALOS
+   ===================================================== */
+function crearPetalos(){
+    petalos=[];
+    for(
+        let i=0;
+        i<55;
+        i++
+    ){
+        petalos.push({
+            x:
+                Math.random()
+                * ancho,
+            y:
+                Math.random()
+                * alto,
+            tam:
+                2 +
+                Math.random()*5,
+            velocidad:
+                .15 +
+                Math.random()*.45,
+            movimiento:
+                Math.random()
+                *Math.PI*2,
+            giro:
+                Math.random()
+                *.04,
+            rotacion:
+                Math.random()
+                *Math.PI*2
+        });
+    }
+}
+/* =====================================================
    DIBUJAR FLOR
-   ========================================================= */
+   ===================================================== */
 function dibujarFlor(
     x,
     y,
     radio,
     rotacion
-) {
+){
     ctx.save();
     ctx.translate(
         x,
@@ -451,39 +543,36 @@ function dibujarFlor(
     ctx.rotate(
         rotacion
     );
-    /* -----------------------------------------------------
+    /* =================================================
        PÉTALOS
-       ----------------------------------------------------- */
-    for (
-        let i = 0;
-        i < 12;
+       ================================================= */
+    for(
+        let i=0;
+        i<12;
         i++
-    ) {
-        const angulo =
-            i *
-            Math.PI *
-            2 /
-            12;
+    ){
         ctx.save();
         ctx.rotate(
-            angulo
+            i *
+            Math.PI*2 /
+            12
         );
         const gradiente =
             ctx.createRadialGradient(
                 0,
-                -radio * 0.65,
-                radio * 0.1,
+                -radio*.65,
+                radio*.08,
                 0,
-                -radio * 0.65,
-                radio * 0.75
+                -radio*.65,
+                radio*.8
             );
         gradiente.addColorStop(
             0,
-            "#fff7a0"
+            "#fff9a6"
         );
         gradiente.addColorStop(
-            0.5,
-            "#ffdd35"
+            .45,
+            "#ffe13c"
         );
         gradiente.addColorStop(
             1,
@@ -494,39 +583,39 @@ function dibujarFlor(
         ctx.beginPath();
         ctx.ellipse(
             0,
-            -radio * 0.72,
-            radio * 0.34,
-            radio * 0.72,
+            -radio*.72,
+            radio*.34,
+            radio*.72,
             0,
             0,
-            Math.PI * 2
+            Math.PI*2
         );
         ctx.fill();
         ctx.restore();
     }
-    /* -----------------------------------------------------
+    /* =================================================
        CENTRO
-       ----------------------------------------------------- */
+       ================================================= */
     const centro =
         ctx.createRadialGradient(
-            -radio * 0.15,
-            -radio * 0.15,
-            radio * 0.05,
+            -radio*.15,
+            -radio*.15,
+            radio*.05,
             0,
             0,
-            radio * 0.6
+            radio*.6
         );
     centro.addColorStop(
         0,
         "#ffd95a"
     );
     centro.addColorStop(
-        0.45,
+        .45,
         "#b86c13"
     );
     centro.addColorStop(
         1,
-        "#65360c"
+        "#60330b"
     );
     ctx.fillStyle =
         centro;
@@ -534,155 +623,105 @@ function dibujarFlor(
     ctx.arc(
         0,
         0,
-        radio * 0.55,
+        radio*.55,
         0,
-        Math.PI * 2
+        Math.PI*2
     );
     ctx.fill();
-    /* -----------------------------------------------------
+    /* =================================================
        SEMILLAS
-       ----------------------------------------------------- */
+       ================================================= */
     ctx.fillStyle =
-        "#ffe27b";
-    for (
-        let i = 0;
-        i < 18;
+        "#ffe67c";
+    for(
+        let i=0;
+        i<20;
         i++
-    ) {
+    ){
         const angulo =
-            i * 2.399;
+            i*2.399;
         const distancia =
-            radio *
-            (0.12 +
-            (i % 3) *
-            0.10);
+            radio*
+            (
+                .12+
+                (i%3)*.10
+            );
         ctx.beginPath();
         ctx.arc(
-            Math.cos(angulo)
-            * distancia,
-            Math.sin(angulo)
-            * distancia,
-            radio * 0.045,
+            Math.cos(
+                angulo
+            )*
+            distancia,
+            Math.sin(
+                angulo
+            )*
+            distancia,
+            radio*.045,
             0,
-            Math.PI * 2
+            Math.PI*2
         );
         ctx.fill();
     }
-    /* -----------------------------------------------------
+    /* =================================================
        TALLO
-       ----------------------------------------------------- */
+       ================================================= */
     ctx.strokeStyle =
         "#55b85c";
     ctx.lineWidth =
         Math.max(
-            3,
-            radio * 0.10
+            2,
+            radio*.10
         );
     ctx.beginPath();
     ctx.moveTo(
         0,
-        radio * 0.4
+        radio*.4
     );
     ctx.lineTo(
         0,
-        radio * 2
+        radio*2
     );
     ctx.stroke();
-    /* -----------------------------------------------------
+    /* =================================================
        HOJAS
-       ----------------------------------------------------- */
+       ================================================= */
     ctx.fillStyle =
         "#419c4e";
     ctx.beginPath();
     ctx.ellipse(
-        -radio * 0.5,
-        radio * 1.25,
-        radio * 0.25,
-        radio * 0.55,
-        -0.65,
+        -radio*.5,
+        radio*1.25,
+        radio*.25,
+        radio*.55,
+        -.65,
         0,
-        Math.PI * 2
+        Math.PI*2
     );
     ctx.fill();
     ctx.beginPath();
     ctx.ellipse(
-        radio * 0.5,
-        radio * 1.55,
-        radio * 0.25,
-        radio * 0.55,
-        0.65,
+        radio*.5,
+        radio*1.55,
+        radio*.25,
+        radio*.55,
+        .65,
         0,
-        Math.PI * 2
+        Math.PI*2
     );
     ctx.fill();
     ctx.restore();
 }
-/* =========================================================
-   DIBUJAR CORAZÓN
-   ========================================================= */
-function dibujarCorazon(
-    x,
-    y,
-    tam
-) {
-    ctx.save();
-    ctx.translate(
-        x,
-        y
-    );
-    ctx.fillStyle =
-        "rgba(255,80,120,0.8)";
-    ctx.beginPath();
-    ctx.moveTo(
-        0,
-        tam
-    );
-    ctx.bezierCurveTo(
-        -tam * 1.5,
-        -tam * 0.1,
-        -tam * 0.9,
-        -tam,
-        -tam * 0.45,
-        -tam
-    );
-    ctx.bezierCurveTo(
-        -tam * 0.1,
-        -tam,
-        0,
-        -tam * 0.65,
-        0,
-        -tam * 0.35
-    );
-    ctx.bezierCurveTo(
-        0,
-        -tam * 0.65,
-        tam * 0.1,
-        -tam,
-        tam * 0.45,
-        -tam
-    );
-    ctx.bezierCurveTo(
-        tam * 0.9,
-        -tam,
-        tam * 1.5,
-        -tam * 0.1,
-        0,
-        tam
-    );
-    ctx.fill();
-    ctx.restore();
-}
-/* =========================================================
+/* =====================================================
    FONDO
-   ========================================================= */
-function dibujarFondo() {
+   ===================================================== */
+function dibujarFondo(){
     const fondo =
         ctx.createRadialGradient(
-            ancho * 0.5,
-            alto * 0.45,
+            ancho*.5,
+            alto*.40,
             0,
-            ancho * 0.5,
-            alto * 0.45,
+            ancho*.5,
+            alto*.40,
             Math.max(
                 ancho,
                 alto
@@ -690,11 +729,11 @@ function dibujarFondo() {
         );
     fondo.addColorStop(
         0,
-        "#172650"
+        "#1c2c55"
     );
     fondo.addColorStop(
-        0.55,
-        "#0b1430"
+        .45,
+        "#0c1735"
     );
     fondo.addColorStop(
         1,
@@ -708,64 +747,77 @@ function dibujarFondo() {
         ancho,
         alto
     );
-}
-/* =========================================================
-   ANIMACIÓN
-   ========================================================= */
-function animarFlores(
-    tiempo
-) {
-    if (!animando)
-        return;
-    dibujarFondo();
-    /* -----------------------------------------------------
-       FLORES
-       ----------------------------------------------------- */
-    flores.forEach(
-        (flor, indice) => {
-            const x =
-                flor.x *
-                ancho;
-            const y =
-                flor.y *
-                alto;
-            const movimiento =
-                Math.sin(
-                    tiempo * 0.0015 +
-                    flor.fase
-                ) * 6;
-            dibujarFlor(
-                x,
-                y +
-                movimiento,
-                flor.tam,
-                tiempo *
-                0.00035 *
-                (indice % 2 === 0
-                    ? 1
-                    : -1)
+    /* ESTRELLAS */
+    for(
+        let i=0;
+        i<70;
+        i++
+    ){
+        const x =
+            (i*97.3)
+            % ancho;
+        const y =
+            (i*53.7)
+            % (alto*.55);
+        const brillo =
+            .20 +
+            .15*
+            Math.sin(
+                performance.now()
+                *.001+i
             );
-        }
-    );
-    /* -----------------------------------------------------
-       PÉTALOS
-       ----------------------------------------------------- */
+        ctx.fillStyle =
+            `rgba(
+                255,
+                239,
+                150,
+                ${brillo}
+            )`;
+        ctx.beginPath();
+        ctx.arc(
+            x,
+            y,
+            .5 +
+            (i%3)*.5,
+            0,
+            Math.PI*2
+        );
+        ctx.fill();
+    }
+}
+/* =====================================================
+   DIBUJAR PETALOS
+   ===================================================== */
+function dibujarPetalos(){
     petalos.forEach(
-        petalo => {
+        petalo=>{
             petalo.y -=
                 petalo.velocidad;
             petalo.movimiento +=
-                0.02;
+                .015;
             petalo.x +=
                 Math.sin(
                     petalo.movimiento
-                ) * 0.4;
-            if (
+                )*.35;
+            petalo.rotacion +=
+                petalo.giro;
+            if(
                 petalo.y <
-                alto * 0.15
-            ) {
+                alto*.10
+            ){
                 petalo.y =
-                    alto * 0.85;
+                    alto*.90;
+            }
+            if(
+                petalo.x<0
+            ){
+                petalo.x =
+                    ancho;
+            }
+            if(
+                petalo.x>ancho
+            ){
+                petalo.x=0;
             }
             ctx.save();
             ctx.translate(
@@ -773,7 +825,7 @@ function animarFlores(
                 petalo.y
             );
             ctx.rotate(
-                petalo.movimiento
+                petalo.rotacion
             );
             ctx.fillStyle =
                 "#ffdc3a";
@@ -781,123 +833,153 @@ function animarFlores(
             ctx.ellipse(
                 0,
                 0,
-                petalo.tam * 0.55,
+                petalo.tam*.55,
                 petalo.tam,
                 0,
                 0,
-                Math.PI * 2
+                Math.PI*2
             );
             ctx.fill();
             ctx.restore();
         }
     );
-    /* -----------------------------------------------------
-       CORAZONES
-       ----------------------------------------------------- */
-    for (
-        let i = 0;
-        i < 6;
-        i++
-    ) {
-        const x =
-            ancho *
-            (
-                0.15 +
-                i * 0.14
-            );
-        const y =
-            alto *
-            (
-                0.40 +
-                Math.sin(
-                    tiempo * 0.001 +
-                    i
-                ) *
-                0.12
-            );
-        dibujarCorazon(
-            x,
-            y,
-            6 +
-            (i % 3) * 2
-        );
+}
+/* =====================================================
+   ANIMACIÓN DEL JARDÍN
+   ===================================================== */
+function animar(){
+    if(
+        !animacionActiva
+    ){
+        return;
     }
+    dibujarFondo();
+    /*
+       Flores pequeñas primero
+       para crear profundidad.
+    */
+    flores
+        .sort(
+            (a,b)=>
+                a.tam-b.tam
+        );
+    flores.forEach(
+        (flor,index)=>{
+            const movimiento =
+                Math.sin(
+                    performance.now()
+                    * flor.velocidad
+                    +
+                    flor.fase
+                )*5;
+            const rotacion =
+                Math.sin(
+                    performance.now()
+                    *.0005
+                    +
+                    flor.fase
+                )*.08;
+            dibujarFlor(
+                flor.x,
+                flor.y+
+                movimiento,
+                flor.tam,
+                rotacion
+            );
+        }
+    );
+    dibujarPetalos();
     requestAnimationFrame(
-        animarFlores
+        animar
     );
 }
-/* =========================================================
+/* =====================================================
    CAMBIAR ESCENA
-   ========================================================= */
+   ===================================================== */
 function mostrarEscena(
     numero
-) {
+){
     document
         .querySelectorAll(
             ".escena"
         )
         .forEach(
             escena =>
-                escena.classList.remove(
+                escena.classList
+                .remove(
                     "activa"
                 )
         );
     document
         .getElementById(
-            "escena" +
-            numero
+            "escena"+numero
         )
-        .classList.add(
+        .classList
+        .add(
             "activa"
         );
 }
-/* =========================================================
-   COMENZAR
-   ========================================================= */
-async function comenzar() {
-    mostrarEscena(1);
-    await esperar(2200);
-    mostrarEscena(2);
-    await esperar(2200);
-    mostrarEscena(3);
-    await esperar(2200);
-    mostrarEscena(4);
-    await esperar(2200);
-    mostrarEscena(5);
-    await esperar(3000);
-    animando = true;
-    crearPetalos();
-    requestAnimationFrame(
-        animarFlores
-    );
-    await esperar(8000);
-    animando = false;
-    mostrarEscena(6);
-}
-/* =========================================================
+/* =====================================================
    ESPERAR
-   ========================================================= */
+   ===================================================== */
 function esperar(
-    milisegundos
-) {
+    tiempo
+){
     return new Promise(
         resolver =>
             setTimeout(
                 resolver,
-                milisegundos
+                tiempo
             )
     );
 }
-/* =========================================================
+/* =====================================================
+   COMENZAR SORPRESA
+   ===================================================== */
+async function comenzar(){
+    /*
+       Cada mensaje dura aproximadamente
+       5 segundos para poder leerlo.
+    */
+    mostrarEscena(1);
+    await esperar(5000);
+    mostrarEscena(2);
+    await esperar(5500);
+    mostrarEscena(3);
+    await esperar(6000);
+    mostrarEscena(4);
+    await esperar(5000);
+    mostrarEscena(5);
+    await esperar(5000);
+    /*
+       AHORA COMIENZA EL JARDÍN
+    */
+    crearPetalos();
+    animacionActiva=true;
+    requestAnimationFrame(
+        animar
+    );
+    /*
+       Dejamos el jardín
+       varios segundos.
+    */
+    await esperar(12000);
+    animacionActiva=false;
+    /*
+       PANTALLA FINAL
+    */
+    mostrarEscena(6);
+}
+/* =====================================================
    REINICIAR
-   ========================================================= */
-function reiniciar() {
-    animando = false;
+   ===================================================== */
+function reiniciar(){
+    animacionActiva=false;
     mostrarEscena(0);
 }
-/* =========================================================
-   INICIALIZAR
-   ========================================================= */
+/* =====================================================
+   INICIO
+   ===================================================== */
 ajustarPantalla();
 </script>
 </body>
